@@ -1,10 +1,11 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, Text, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { ChannelList } from './src/components/ChannelList';
 import { StreamChat } from 'stream-chat'
+import { ChannelHeader } from './src/components/ChannelHeader';
+import { Chat, MessageList, MessageInput, Channel } from 'stream-chat-react-native'
 
 const chatClient = new StreamChat('q95x9hkbyd6p')
 const userToken =
@@ -18,9 +19,34 @@ chatClient.setUser(user, userToken)
 
 /** This is where you will put your channel component which container MessageList and MessageInput component  */
 function ChannelScreen({ navigation, route }) {
+  const [channel, setChannel] = useState(null)
+
+  useEffect(() => {
+    if (!channel) {
+      navigation.openDrawer()
+    }
+    const channelId = route.params ? route.params.channelId : null
+    const _channel = chatClient.channel('messaging', channelId)
+    setChannel(_channel)
+  }, [route.params]) // if route.params changes, then run code above
+
   return (
-    <SafeAreaView>
-      <Text>Channel Screen</Text>
+    <SafeAreaView style={styles.channelScreenSaveAreaView}>
+      <View style={styles.channelScreenContainer}>
+        <ChannelHeader
+          navigation={navigation}
+          channel={channel}
+          client={chatClient}
+        />
+        <View style={styles.chatContainer}>
+          <Chat client={chatClient}>
+            <Channel channel={channel}>
+              <MessageList />
+              <MessageInput />
+            </Channel>
+          </Chat>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }

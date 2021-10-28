@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
-import iconSearch from '../images/icon-search.png';
-import iconThreeDots from '../images/icon-3-dots.png';
+// import iconSearch from '../images/icon-search.png';
+// import iconThreeDots from '../images/icon-3-dots.png';
 
 export default function ChannelHeader({ navigation, channel, client }) {
     let channelTitle = '#channel_name'
