@@ -6,6 +6,8 @@ import { ChannelList } from './src/components/ChannelList';
 import { StreamChat } from 'stream-chat'
 import { ChannelHeader } from './src/components/ChannelHeader';
 import { Chat, MessageList, MessageInput, Channel } from 'stream-chat-react-native'
+import { DateSeparator } from './src/components/DateSeparator'
+import { MessageSlack } from './src/components/MessageSlack'
 
 const chatClient = new StreamChat('q95x9hkbyd6p')
 const userToken =
@@ -41,7 +43,10 @@ function ChannelScreen({ navigation, route }) {
         <View style={styles.chatContainer}>
           <Chat client={chatClient}>
             <Channel channel={channel}>
-              <MessageList />
+              <MessageList
+                Message={MessageSlack}
+                DateSeparator={DateSeparator}
+              />
               <MessageInput />
             </Channel>
           </Chat>
