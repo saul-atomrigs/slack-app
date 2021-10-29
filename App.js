@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, Text, StyleSheet } from 'react-native';
+import { InputBox } from './src/components/InputBox'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { ChannelList } from './src/components/ChannelList';
@@ -8,6 +9,7 @@ import { ChannelHeader } from './src/components/ChannelHeader';
 import { Chat, MessageList, MessageInput, Channel } from 'stream-chat-react-native'
 import { DateSeparator } from './src/components/DateSeparator'
 import { MessageSlack } from './src/components/MessageSlack'
+import streamChatTheme from './src/stream-chat-theme.js'
 
 const chatClient = new StreamChat('q95x9hkbyd6p')
 const userToken =
@@ -41,13 +43,23 @@ function ChannelScreen({ navigation, route }) {
           client={chatClient}
         />
         <View style={styles.chatContainer}>
-          <Chat client={chatClient}>
+          <Chat client={chatClient} style={streamChatTheme}>
             <Channel channel={channel}>
               <MessageList
                 Message={MessageSlack}
                 DateSeparator={DateSeparator}
               />
-              <MessageInput />
+              <MessageInput
+                Input={InputBox}
+                additionalTextInputProps={{
+                  placeholderTextColor: '#979A9A',
+                  placeholder:
+                    channel && channel.data.name
+                      ? 'Message #' +
+                      channel.data.name.toLowerCase().replace(' ', '_')
+                      : 'Message',
+                }}
+              />
             </Channel>
           </Chat>
         </View>
